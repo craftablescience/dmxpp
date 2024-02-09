@@ -117,7 +117,7 @@ bool DMX::openInternalBinary(BufferStream& stream) {
 	// Helper to read a value for an attribute
 	std::function<Value::Generic(BufferStream&, Value::ID, bool)> readValue;
 	readValue = [&readValue, &readStringFromIndex](BufferStream& stream, Value::ID type, bool useStringList) -> Value::Generic {
-		const auto readArrayValue = [&readValue]<typename T>(BufferStream& stream, Value::ID type) -> std::vector<T> {
+		const auto readArrayValue = [&readValue]<typename T>(BufferStream& stream, Value::ID type) {
 			std::vector<T> out;
 			auto size = stream.read<std::uint32_t>();
 			out.reserve(size);
@@ -129,8 +129,7 @@ bool DMX::openInternalBinary(BufferStream& stream) {
 		switch (type) {
 			using enum Value::ID;
 			case INVALID:
-				// Not much we can do
-				return 0;
+				return Value::Invalid{};
 			case ELEMENT: {
 				Value::Element value;
 				value.index = stream.read<std::uint32_t>();

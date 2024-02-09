@@ -14,6 +14,8 @@ namespace dmxpp {
 
 namespace Value {
 
+struct Invalid {};
+
 struct Element {
 	std::uint32_t index;
 	std::string stubGUID;
@@ -60,6 +62,7 @@ struct Matrix4x4 {
 };
 
 using Generic = std::variant<
+	Invalid,
 	Element,
 	int,
 	float,
@@ -74,6 +77,7 @@ using Generic = std::variant<
 	//EulerAngle, // Same as Vector3
 	//Quaternion, // Same as Vector4
 	Matrix4x4,
+
 	std::vector<Element>,
 	std::vector<int>,
 	std::vector<float>,
