@@ -150,7 +150,7 @@ bool DMX::openInternalBinary(BufferStream& stream) {
 			case BYTEARRAY:
 				return stream.read_bytes(stream.read<std::uint32_t>());
 			case TIME:
-				return static_cast<float>(stream.read<std::int32_t>()) / 10000; // todo: this is wrong
+				return Value::Time{static_cast<float>(static_cast<double>(stream.read<std::int32_t>()) / 10000.0)};
 			case COLOR:
 				return stream.read<Value::Color>();
 			case VECTOR2:

@@ -23,7 +23,9 @@ struct Element {
 
 using ByteArray = std::vector<std::byte>;
 
-using Time = float;
+struct Time {
+	float seconds;
+};
 
 struct Color {
 	unsigned char r;
@@ -69,7 +71,7 @@ using Generic = std::variant<
 	bool,
 	std::string,
 	std::vector<std::byte>,
-	//Time, // Same as float
+	Time,
 	Color,
 	Vector2,
 	Vector3,
@@ -84,7 +86,7 @@ using Generic = std::variant<
 	std::vector<bool>,
 	std::vector<std::string>,
 	std::vector<std::vector<std::byte>>,
-	//std::vector<Time>,
+	std::vector<Time>,
 	std::vector<Color>,
 	std::vector<Vector2>,
 	std::vector<Vector3>,
@@ -155,7 +157,7 @@ struct Attribute {
 	Value::Generic value;
 
 	template<typename T>
-	std::optional<T> getValueAs() {
+	std::optional<T> getValueAs() const {
 		if constexpr (std::holds_alternative<T>(this->value)) {
 			try {
 				return std::get<T>(this->value);
