@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(DMXPP_BUILD_TESTS "Build tests for dmxpp" OFF)
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty/bufferstream")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty/BufferStream")
 
 list(APPEND ${PROJECT_NAME}_SOURCES
         "${CMAKE_CURRENT_SOURCE_DIR}/include/dmxpp/dmxpp.h"

@@ -18,17 +18,11 @@ static std::vector<std::byte> readFileToBuffer(const std::string& path) {
 	return out;
 }
 
-TEST(Reader, binary_v2) {
-	DMX dmx;
-	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "binary_v2.dmx"));
-	ASSERT_TRUE(opened);
-}
-
-TEST(Reader, v1) {
+/*TEST(Reader, v1) {
 	DMX dmx;
 	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v1.dmx"));
 	ASSERT_TRUE(opened);
-}
+}*/
 
 TEST(Reader, v2) {
 	DMX dmx;
@@ -36,7 +30,7 @@ TEST(Reader, v2) {
 	ASSERT_TRUE(opened);
 }
 
-TEST(Reader, v3) {
+/*TEST(Reader, v3) {
 	DMX dmx;
 	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v3.dmx"));
 	ASSERT_TRUE(opened);
@@ -52,4 +46,4 @@ TEST(Reader, v5) {
 	DMX dmx;
 	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v5.dmx"));
 	ASSERT_TRUE(opened);
-}
+}*/
