@@ -18,32 +18,27 @@ static std::vector<std::byte> readFileToBuffer(const std::string& path) {
 	return out;
 }
 
-/*TEST(Reader, v1) {
-	DMX dmx;
-	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v1.dmx"));
-	ASSERT_TRUE(opened);
-}*/
-
+// v1 and v2 are identical afaik...
 TEST(Reader, v2) {
 	DMX dmx;
-	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v2.dmx"));
+	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "binary/v2.dmx"));
 	ASSERT_TRUE(opened);
 }
 
-/*TEST(Reader, v3) {
+TEST(Reader, v3) {
 	DMX dmx;
-	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v3.dmx"));
+	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "binary/v3.dmx"));
 	ASSERT_TRUE(opened);
 }
 
 TEST(Reader, v4) {
 	DMX dmx;
-	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v4.dmx"));
+	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "binary/v4.dmx"));
 	ASSERT_TRUE(opened);
 }
 
 TEST(Reader, v5) {
 	DMX dmx;
-	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "v5.dmx"));
+	bool opened = dmx.open(::readFileToBuffer(TEST_FILE_ROOT_PATH "binary/v5.dmx"));
 	ASSERT_TRUE(opened);
-}*/
+}
