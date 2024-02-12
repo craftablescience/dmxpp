@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <variant>
 #include <vector>
@@ -134,19 +135,62 @@ enum class ID : unsigned char {
 	ARRAY_END = 28,
 };
 
-inline std::byte IDToByte(ID type) {
-	return static_cast<std::byte>(type);
+constexpr std::byte IDToByte(ID id) {
+	return static_cast<std::byte>(id);
 }
 
-inline ID byteToID(std::byte id) {
+constexpr ID byteToID(std::byte id) {
 	return static_cast<ID>(id);
 }
 
-inline ID arrayIDToInnerID(ID id) {
+constexpr ID arrayIDToInnerID(ID id) {
 	if (id >= ID::ARRAY_START) {
 		return static_cast<ID>(static_cast<unsigned char>(id) - static_cast<unsigned char>(ID::VALUE_END));
 	}
 	return id;
+}
+
+constexpr ID innerIDToArrayID(ID id) {
+	if (id <= ID::VALUE_END) {
+		return static_cast<ID>(static_cast<unsigned char>(id) + static_cast<unsigned char>(ID::VALUE_END));
+	}
+	return id;
+}
+
+std::string IDToString(ID id);
+
+// NOLINTNEXTLINE(*-no-recursion)
+constexpr ID stringToID(std::string_view id) {
+	if (id == "element") {
+		return ID::ELEMENT;
+	} else if (id == "int") {
+		return ID::INT;
+	} else if (id == "float") {
+		return ID::FLOAT;
+	} else if (id == "bool") {
+		return ID::BOOL;
+	} else if (id == "string") {
+		return ID::STRING;
+	} else if (id == "binary") {
+		return ID::BYTEARRAY;
+	} else if (id == "time") {
+		return ID::TIME;
+	} else if (id == "color") {
+		return ID::COLOR;
+	} else if (id == "vector2") {
+		return ID::VECTOR2;
+	} else if (id == "vector3") {
+		return ID::VECTOR3;
+	} else if (id == "vector4") {
+		return ID::VECTOR4;
+	} else if (id == "quaternion") {
+		return ID::QUATERNION;
+	} else if (id == "matrix") {
+		return ID::MATRIX_4X4;
+	} else if (id.ends_with("_array")) {
+		return innerIDToArrayID(stringToID(id.substr(0, id.length() - 6)));
+	}
+	return ID::INVALID;
 }
 
 } // namespace Value

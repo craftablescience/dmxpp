@@ -9,15 +9,13 @@ namespace dmxpp {
 
 class DMX {
 public:
-	DMX() = default;
+	DMX(const std::byte* dmxData, std::size_t dmxSize);
 
-	[[nodiscard]] bool open(const std::byte* dmxData, std::size_t dmxSize);
+	DMX(const unsigned char* dmxData, std::size_t dmxSize);
 
-	[[nodiscard]] bool open(const unsigned char* dmxData, std::size_t dmxSize);
+	explicit DMX(const std::vector<std::byte>& dmxData);
 
-	[[nodiscard]] bool open(const std::vector<std::byte>& dmxData);
-
-	[[nodiscard]] bool open(const std::vector<unsigned char>& dmxData);
+	explicit DMX(const std::vector<unsigned char>& dmxData);
 
 	[[nodiscard]] explicit operator bool() const;
 
@@ -25,10 +23,12 @@ public:
 
 	[[nodiscard]] int getFormatVersion() const;
 
-protected:
-	[[nodiscard]] bool openInternalText(const std::byte* dmxData, std::size_t dmxSize);
+	[[nodiscard]] const std::vector<Element>& getElements() const;
 
-	[[nodiscard]] bool openInternalBinary(BufferStream& stream);
+protected:
+	[[nodiscard]] bool openText(const std::byte* dmxData, std::size_t dmxSize);
+
+	[[nodiscard]] bool openBinary(BufferStream& stream);
 
 private:
 	bool opened = false;

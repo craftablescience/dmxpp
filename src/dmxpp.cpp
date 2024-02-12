@@ -7,9 +7,9 @@
 
 using namespace dmxpp;
 
-bool DMX::open(const std::byte* dmxData, std::size_t dmxSize) {
-	if (this->opened || !dmxData || !dmxSize) {
-		return false;
+DMX::DMX(const std::byte* dmxData, std::size_t dmxSize) {
+	if (!dmxData || !dmxSize) {
+		return;
 	}
 
 	BufferStream stream{dmxData, dmxSize};
@@ -17,7 +17,7 @@ bool DMX::open(const std::byte* dmxData, std::size_t dmxSize) {
 	auto header = stream.read_string();
 	if (header.length() < 37) {
 		// Minimum possible header length - early "binary_v2" version unsupported
-		return false;
+		return;
 	}
 	char encodingTypeData[64];
 	int encodingVersionData;
@@ -35,28 +35,24 @@ bool DMX::open(const std::byte* dmxData, std::size_t dmxSize) {
 	if (this->encodingVersion >= 9) {
 		// This format adds some stuff which really messes with v5 and below
 		// Difficult to support both, and very easy to be lazy
-		return false;
+		return;
 	}
 
 	if (this->encodingType == Format::BINARY) {
-		this->opened = this->openInternalBinary(stream);
+		this->opened = this->openBinary(stream);
 	} else if (this->encodingType == Format::TEXT) {
-		this->opened = this->openInternalText(dmxData, dmxSize);
+		this->opened = this->openText(dmxData, dmxSize);
 	}
-	return this->opened;
 }
 
-bool DMX::open(const unsigned char* dmxData, std::size_t dmxSize) {
-	return this->open(reinterpret_cast<const std::byte*>(dmxData), dmxSize);
-}
+DMX::DMX(const unsigned char* dmxData, std::size_t dmxSize) :
+		DMX(reinterpret_cast<const std::byte*>(dmxData), dmxSize) {}
 
-bool DMX::open(const std::vector<std::byte>& dmxData) {
-	return this->open(dmxData.data(), dmxData.size());
-}
+DMX::DMX(const std::vector<std::byte>& dmxData) :
+		DMX(dmxData.data(), dmxData.size()) {}
 
-bool DMX::open(const std::vector<unsigned char>& dmxData) {
-	return this->open(dmxData.data(), dmxData.size());
-}
+DMX::DMX(const std::vector<unsigned char>& dmxData)
+		: DMX(dmxData.data(), dmxData.size()) {}
 
 DMX::operator bool() const {
 	return this->opened;
@@ -70,11 +66,15 @@ int DMX::getFormatVersion() const {
 	return this->encodingVersion;
 }
 
-bool DMX::openInternalText(const std::byte* dmxData, std::size_t dmxSize) {
-	return false; // todo
+const std::vector<Element>& DMX::getElements() const {
+	return this->elements;
 }
 
-bool DMX::openInternalBinary(BufferStream& stream) {
+bool DMX::openText(const std::byte* dmxData, std::size_t dmxSize) {
+	return false; // todo: text decoding
+}
+
+bool DMX::openBinary(BufferStream& stream) {
 	// Version-specific conditionals
 	const bool stringListLengthIsShort = this->encodingVersion < 4;
 	const bool stringListIndicesAreShort = this->encodingVersion < 5;

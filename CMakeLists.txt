@@ -9,7 +9,10 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty/BufferStream")
 
 list(APPEND ${PROJECT_NAME}_SOURCES
         "${CMAKE_CURRENT_SOURCE_DIR}/include/dmxpp/dmxpp.h"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/dmxpp.cpp")
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/dmxpp/Format.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/dmxpp/Value.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/dmxpp.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/Value.cpp")
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE bufferstream)
